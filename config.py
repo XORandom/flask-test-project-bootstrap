@@ -16,3 +16,4 @@ class Config:
     POSTS_ON_PAGE = 3
     """Количество постов на странице"""
     SECURITY_EMAIL_SENDER = 'valid_email@my_domain.com'
+    LANGUAGES = ['ru', 'en']
