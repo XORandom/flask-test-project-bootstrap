@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <table>
+{% block app_content %}
+    <table class="table-table-hover">
         <tr valign="top">
-            <td><img src="{{ user.avatar(128) }}"></td>
+            <td><img src="{{ user.avatar(256) }}"></td>
             <td>
                 <h1>Пользователь: {{ user.username }}</h1>
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-                {% if user.last_seen %}<p>Последнее посещение: {{ user.last_seen }}</p>{% endif %}
-                <p>{{ user.followers.count() }} Подписчики, {{ user.following.count() }} Подписки</p>
+                {% if user.last_seen %}
+                    <p>
+                        {% if user.gender == 'M' %}
+                            был в сети:
+                        {% else %}
+                            была в сети:
+                        {% endif %}
+                        {{ user.last_seen }}
+                    </p>
+                {% endif %}
+                <p> Подписчики: {{ user.followers.count() }} Подписки: {{ user.following.count() }} </p>
                 {% if user == current_user %}
                 <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
 <!--                <p>-->
@@ -28,16 +37,23 @@
             </td>
         </tr>
     </table>
-    <hr>
-<p>
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
-    {% if next_url %}
-        <a href="{{ next_url }}">Старые посты</a>
-    {% endif %}
-    {% if prev_url %}
-        <a href="{{ prev_url }}">Новые посты</a>
-    {% endif %}
-</p>
+    <br>
+{% for post in posts %}
+    {% include '_post.html' %}
+{% endfor %}
+<nav aria-label="...">
+    <ul class="pager">
+        <li class="next{% if not next_url %} disabled{% endif %}">
+            <a href="{{ next_url or '#' }}">
+               Старые посты <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+        <li class="previous{% if not prev_url %} disabled{% endif %}">
+            <a href="{{ prev_url or '#' }}">
+                <span aria-hidden="true">&larr;</span> Новые посты
+            </a>
+        </li>
+    </ul>
+</nav>
+
 {% endblock %}
