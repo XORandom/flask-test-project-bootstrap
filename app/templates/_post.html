@@ -10,11 +10,14 @@
             <a href="{{ url_for('user', username=post.author.username) }}">
                 {{ post.author.username }}
             </a>
+
             {% if post.author.gender=='M'%}
-            написал:
+            {{ _('написал') }}
             {% else%}
-            написала:
+            {{ _('написала') }}
             {% endif %}
+            {{ moment(post.timestamp).fromNow() }}
+            :
             <br>
             {{ post.body }}
         </td>

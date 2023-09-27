@@ -5,21 +5,25 @@
         <tr valign="top">
             <td><img src="{{ user.avatar(256) }}"></td>
             <td>
-                <h1>Пользователь: {{ user.username }}</h1>
+                <h1>{{ _('Пользователь:') }} {{ user.username }}</h1>
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}
                     <p>
                         {% if user.gender == 'M' %}
-                            был в сети:
+                            {{ _('был в сети') }}:
                         {% else %}
-                            была в сети:
+                            {{ _('была в сети') }}:
                         {% endif %}
-                        {{ user.last_seen }}
+                        {{ moment(user.last_seen).format('L') }}
+                        (
+                        {{ moment(user.last_seen).fromNow() }}
+                        )
                     </p>
                 {% endif %}
-                <p> Подписчики: {{ user.followers.count() }} Подписки: {{ user.following.count() }} </p>
+<!--                Исправить также все остальные-->
+                <p> {{ _('Подписчики: %(count)d', count=user.followers.count()) }} {{ _('Подписки') }}: {{ user.following.count() }} </p>
                 {% if user == current_user %}
-                <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+                <p><a href="{{ url_for('edit_profile') }}">{{ _('Редактировать профиль') }}</a></p>
 <!--                <p>-->
                 {% elif not current_user.is_following(user) %} <!--Если не подписан-->
                     <form action="{{ url_for('follow', username=user.username) }}" method="post">
@@ -29,8 +33,7 @@
                 {% else %} <!--Если подписан-->
                     <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
                         {{ form.hidden_tag() }}
-                        {{ form.submit(value='Отписаться') }}
-
+                        {{ form.submit(value=_('Отписаться')) }}
                     </form>
                 {% endif %}
 <!--                </p>-->
@@ -45,12 +48,12 @@
     <ul class="pager">
         <li class="next{% if not next_url %} disabled{% endif %}">
             <a href="{{ next_url or '#' }}">
-               Старые посты <span aria-hidden="true">&rarr;</span>
-            </a>
-        </li>
-        <li class="previous{% if not prev_url %} disabled{% endif %}">
-            <a href="{{ prev_url or '#' }}">
-                <span aria-hidden="true">&larr;</span> Новые посты
+                   {{ _('Старые посты') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> {{ _('Новые посты') }}
             </a>
         </li>
     </ul>

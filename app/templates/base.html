@@ -1,11 +1,9 @@
 {% extends 'bootstrap/base.html' %}
 {% block title %}
     {% if title %}
-    <title>
-        {{ title }} - Моя соц сеть
-    </title>
+        {{ title }} - {{ _('Моя соц сеть') }}
     {% else %}
-    <title> Моя соц сеть </title>
+        {{ _('Моя соц сеть') }}
     {% endif %}
 {% endblock %}
 
@@ -24,15 +22,15 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('index') }}">Домашняя страница</a></li>
-                    <li><a href="{{ url_for('news') }}">Новости</a></li>
+                    <li><a href="{{ url_for('index') }}">{{ _('Домашняя страница') }}</a></li>
+                    <li><a href="{{ url_for('news') }}">{{ _('Новости') }}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for('login') }}">Вход</a></li>
+                    <li><a href="{{ url_for('login') }}">{{ _('Вход') }}</a></li>
                     {% else %}
                     <li><a href="{{ url_for('user', username=current_user.username) }}">Профиль</a></li>
-                    <li><a href="{{ url_for('logout') }}">Выход</a></li>
+                    <li><a href="{{ url_for('logout') }}">{{ _('Выход') }}</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -53,4 +51,11 @@
         {# содержимое приложения которое должно быть предоставлено в блоке app_content #}
         {% block app_content %}{% endblock %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
+<!--    {{ moment.lang('ru') }}-->
 {% endblock %}
