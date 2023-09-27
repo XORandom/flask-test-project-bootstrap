@@ -1,34 +1,15 @@
 {% extends 'base.html' %}
-{% block content %}
+{% import 'bootstrap/wtf.html' as wtf_form %}
+
+{% block app_content %}
 
   <h1>Вход</h1>
-    <form action="" method="post" novalidate>
-      {{ form.hidden_tag() }} <!--Применяется секретный ключ-->
-        <p>
-          {{ form.username.label }} <br>
-          {{ form.username(size=32) }} <br>
-          {% for error in form.username.errors %}
-            <span style="color: red;"> <!--Тег для вывода строки-->
-              [{{ 'Поле логин обязательно для заполнения!' }}]
-            </span>
-          {% endfor %}
-        </p>
-        <p>
-          {{ form.password.label }}<br>
-          {{ form.password(size=32) }}<br>
-          {% for error in form.username.errors %}
-            <span style="color: red;"> <!--Тег для вывода строки-->
-              [{{ 'Без пароля нельзя!' }}]
-            </span>
-          {% endfor %}
-        </p>
-        <p>
-          {{ form.remember_me.label() }} {{ form.remember_me }}
-        </p>
-        <p>
-          {{ form.submit }}
-        </p>
-    </form>
+    <div class="row">
+        <div class="col-md-4"> <!---->
+            {{ wtf_form.quick_form(form) }}
+        </div>
+    </div>
+  <br>
   <p> Новый пользователь? <a href="{{ url_for('register') }}"> Нажмите для регистрации </a> </p>
   <p> Забыли пароль? <a href="{{ url_for('reset_password_request') }}"> Нажмите для сброса </a> </p>
 {% endblock %}
