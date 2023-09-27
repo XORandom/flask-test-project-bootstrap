@@ -1,15 +1,16 @@
 import config
 from app import app, db
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, g
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
 from app.email import send_password_reset_email
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordForm, ResetPasswordRequestForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordForm, \
+    ResetPasswordRequestForm, EditPostForm
 from app.models import User, Post
+from flask_babel import _, get_locale
 
 # from werkzeug.urls import url_parse
 from urllib.parse import urlparse
 from datetime import datetime
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -21,7 +22,7 @@ def index():
         post = Post(body=form.post_tx.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Ваш пост опубликован')
+        flash(_('Ваш пост опубликован'))
         return redirect(url_for('index'))
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(page=page,
@@ -49,7 +50,7 @@ def index():
     #         'body': 'Да пора уже'
     #     }
     # ]
-    return render_template('index.html', title='Домашняя страница', posts=posts, form=form, user=current_user,
+    return render_template('index.html', title=_('Домашняя страница'), posts=posts, form=form, user=current_user,
                            next_url=next_page_url, prev_url=prev_page_url)
 
 
@@ -68,9 +69,9 @@ def news():
         prev_page_url = url_for('news', page=posts.prev_num)
     else:
         prev_page_url = None
-    return render_template('index.html', title='Новости', posts=posts, user=current_user,
+    return render_template('index.html', title=_('Новости'), posts=posts, user=current_user,
                            next_url=next_page_url, prev_url=prev_page_url)
-    # Тот же индекс, но без порождениия формы для ввода
+    # Тот же индекс, но без порождения формы для ввода
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -81,7 +82,7 @@ def login():
     if form.validate_on_submit():
         user_login = User.query.filter_by(username=form.username.data).first()
         if user_login is None or not user_login.check_password(form.password.data):
-            flash('Неправильное имя пользователя или пароль ')
+            flash(_('Неправильное имя пользователя или пароль '))
             return redirect(url_for('login'))
         login_user(user=user_login, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -111,9 +112,9 @@ def register():
         user_new.set_password(form.password.data)
         db.session.add(user_new)
         db.session.commit()
-        flash('Регистрация прошла успешно')
+        flash(_('Регистрация прошла успешно'))
         return redirect(url_for('login'))
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('register.html', title=_('Регистрация'), form=form)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
@@ -124,12 +125,12 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash('Изменения сохранены')
+        flash(_('Изменения сохранены'))
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Редактирование профиля',
+    return render_template('edit_profile.html', title=_('Редактирование профиля'),
                            form=form)
 
 
@@ -157,14 +158,17 @@ def user(username):
         prev_page_url = None
 
     return render_template('user.html', user=user_, posts=posts, form=form,
-                           next_url=next_page_url, prev_url=prev_page_url)
+                           next_url=next_page_url, prev_url=prev_page_url,
+                           title=_(f'Профиль {user_.username}'))
 
 
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
-        current_user.last_seen = datetime.now()
+        current_user.last_seen = datetime.utcnow()
         db.session.commit()
+    g.locale = str(get_locale())
+    # g - глобальные переменные для Flask
 
 
 @app.route('/follow/<username>', methods=['POST'])
@@ -174,14 +178,14 @@ def follow(username):
     if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
-            flash(f'Пользователь {username} не найден')
+            flash(_(f'Пользователь {username} не найден'))
             return redirect(url_for('index'))
         if user == current_user:
-            flash(f'Нельзя подписаться на самого себя')
+            flash(_(f'Нельзя подписаться на самого себя'))
             return redirect(url_for('user', username=username))
         current_user.follow(user)
         db.session.commit()  # Добавляем связь в БД
-        flash(f'Вы подписались на {username}')
+        flash(_(f'Вы подписались на {username}'))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
@@ -201,7 +205,7 @@ def unfollow(username):
         #     return redirect(url_for('user', username=username))
         current_user.unfollow(user)
         db.session.commit()  # Добавляем связь в БД
-        flash(f'Вы отписались от {username}')
+        flash(_(f'Вы отписались от {username}'))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
@@ -216,9 +220,9 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
-            flash('Проверь свою почту для восстановления пароля')
+            flash(_('Проверь свою почту для восстановления пароля'))
         else:
-            flash('Данная почта не зарегистрирована')
+            flash(_('Данная почта не зарегистрирована'))
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',
                            title='Сброс пароля', form=form)
@@ -235,6 +239,33 @@ def reset_password(token):
     if form.validate_on_submit():
         user_.set_password(form.password.data)
         db.session.commit()
-        flash('Вы установили новый пароль')
+        flash(_('Вы установили новый пароль'))
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+
+@app.route('/delete_post/<id>', methods=['GET', 'POST'])
+@login_required
+def delete_post(id, url=None):
+    """Удаление поста"""
+    post = Post.query.get(int(id))
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('index'))
+    # return redirect(url_for('url'))
+
+
+@app.route('/edit_post/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(id, url=None):
+    """Редактирование поста"""
+    post = Post.query.get(int(id))
+    form = EditPostForm(post)
+    if form.validate_on_submit() and request.method == 'POST':
+        post.body = form.posts.data
+        db.session.commit()
+        flash(_('Изменения сохранены'))
+        return redirect(url_for('index'))
+    elif request.method == 'GET':
+        form.posts.data = post.body
+    return render_template('edit_post.html', form=form)

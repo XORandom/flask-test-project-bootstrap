@@ -1,16 +1,18 @@
 import os
-from flask import Flask, current_app
+from flask import Flask, current_app, request
+from flask_babel import Babel
 
-from flask_bootstrap import  Bootstrap
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_babel import _, get_locale
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 
 from config import Config
-
 
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'python flask'
@@ -24,10 +26,22 @@ login = LoginManager(app)
 """Отвечает за логины"""
 login.login_view = 'login'
 """Ищет маршрут login, будет подставлять имя пользователя в строку браузера"""
-login.login_message = 'Для просмотра необходима авторизация'
-"""замена английского сообщения на русское"""
+login.login_message = _('Для просмотра необходима авторизация')
+"""Замена английского сообщения на русское"""
 mail = Mail(app)
 bootstrap = Bootstrap(app)
+moment = Moment(app)
+"""Переводит отображение времени в другой вид. Moment - библиотека JS"""
+
+
+def get_local():
+    """Перевод на местный язык. Смотрит язык браузера"""
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+babel = Babel(app)
+babel.init_app(app, locale_selector=get_local)
+"""Инициализирует начальный язык"""
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
@@ -60,5 +74,3 @@ if not app.debug:
     app.logger.info('My app start')
 
 from app import routes, models, errors
-
-
