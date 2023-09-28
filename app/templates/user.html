@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <table class="table-table-hover">
-        <tr valign="top">
+    <table class="table table-hover">
+        <tr>
             <td><img src="{{ user.avatar(256) }}"></td>
             <td>
                 <h1>{{ _('Пользователь:') }} {{ user.username }}</h1>
@@ -26,34 +26,33 @@
                 <p><a href="{{ url_for('edit_profile') }}">{{ _('Редактировать профиль') }}</a></p>
 <!--                <p>-->
                 {% elif not current_user.is_following(user) %} <!--Если не подписан-->
+
                     <form action="{{ url_for('follow', username=user.username) }}" method="post">
                         {{ form.hidden_tag() }}
                         {{ form.submit() }}
                     </form>
-                <p>
-                    {% else %} <!--Если подписан-->
-
+                {% else %} <!--Если подписан-->
+                    <p>
                     <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
                             {{ form.hidden_tag() }}
                             {{ form.submit(value=_('Отписаться')) }}
                         </form>
                     {% endif %}
-                </p>
+                    </p>
                     {% if user != current_user %}
                     <p>
                         <a href="{{ url_for('send_message', recipient=user.username) }}">
-                            {{ _(Написать сообщение) }}
+                            {{ _('Написать сообщение') }}
                         </a>
                     </p>
                     {% endif %}
-<!--                </p>-->
             </td>
         </tr>
     </table>
     <br>
-{% for post in posts %}
-    {% include '_post.html' %}
-{% endfor %}
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
 <nav aria-label="...">
     <ul class="pager">
         <li class="next{% if not next_url %} disabled{% endif %}">

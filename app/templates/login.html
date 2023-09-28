@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf_form %}
 
 {% block app_content %}
@@ -10,6 +10,6 @@
         </div>
     </div>
   <br>
-  <p> {{ _('Новый пользователь?') }} <a href="{{ url_for('register') }}"> {{ _('Нажмите для регистрации') }} </a> </p>
-  <p> {{ _('Забыли пароль?') }} <a href="{{ url_for('reset_password_request') }}"> {{ _('Нажмите для сброса') }} </a> </p>
+  <p>{{ _('Новый пользователь?') }} <a href="{{ url_for('register') }}"> {{ _('Нажмите для регистрации') }} </a> </p>
+  <p>{{ _('Забыли пароль?') }} <a href="{{ url_for('reset_password_request') }}"> {{ _('Нажмите для сброса') }} </a> </p>
 {% endblock %}
