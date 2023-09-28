@@ -1,0 +1,86 @@
+2023-09-25 12:29:02,015 ERROR: Exception on /edit_profile [POST] [in C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1965, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 921, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.IntegrityError: UNIQUE constraint failed: user.username
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\app\routes.py", line 72, in edit_profile
+    db.session.commit()
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\scoping.py", line 554, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1923, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1239, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1214, in _prepare_impl
+    self.session.flush()
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4179, in flush
+    self._flush(objects)
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4314, in _flush
+    with util.safe_reraise():
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4275, in _flush
+    flush_context.execute()
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 909, in _emit_update_statements
+    c = connection.execute(
+        ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1412, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1635, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1844, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1984, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2339, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1965, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\Teacher\PycharmProjects\Python_cn\flask_social_project\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 921, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: user.username
+[SQL: UPDATE user SET username=?, about_me=? WHERE user.id = ?]
+[parameters: ('test2', 'ќй как хочетс€ домой', 1)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
