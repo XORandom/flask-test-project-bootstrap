@@ -1,47 +1,32 @@
-import os
 from flask import Flask, current_app, request
-from flask_babel import Babel
-
-from flask_bootstrap import Bootstrap
+from flask_babel import Babel, _, lazy_gettext as _l
 from flask_moment import Moment
+
+from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from flask_mail import Mail
-from flask_babel import _, get_locale
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
+from flask_mail import Mail
+import os
+from flask_bootstrap import Bootstrap
 
-from config import Config
+def get_local():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'python flask'
-# app.config['SECRET_KEY'] = Config.SECRET_KEY  # Явное присвоение не нужно, если название SECRET_KEY
-app.config.from_object(Config)  # Можно использовать следующий вариант
+app.config.from_object(Config)
 db = SQLAlchemy(app)
-"""База данных"""
 migrate = Migrate(app, db)
-"""Отвечает за миграцию"""
 login = LoginManager(app)
-"""Отвечает за логины"""
 login.login_view = 'login'
-"""Ищет маршрут login, будет подставлять имя пользователя в строку браузера"""
-login.login_message = _('Для просмотра необходима авторизация')
-"""Замена английского сообщения на русское"""
+login.login_message = _l('Для просмотра необходима авторизация')
 mail = Mail(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
-"""Переводит отображение времени в другой вид. Moment - библиотека JS"""
-
-
-def get_local():
-    """Перевод на местный язык. Смотрит язык браузера"""
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
 babel = Babel(app)
 babel.init_app(app, locale_selector=get_local)
-"""Инициализирует начальный язык"""
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
@@ -53,12 +38,12 @@ if not app.debug:
             secure = ()
         mail_handler = SMTPHandler(
             mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
-            fromaddr='example@' + app.config['MAIL_SERVER'],  # От кого
-            toaddrs=app.config['ADMINS'],  # Для кого
-            subject='Your app crashes',  # Тема сообщения
-            credentials=auth,  # Имя пользователя и пароль от почтового сервера
+            fromaddr='example@' + app.config['MAIL_SERVER'],
+            toaddrs=app.config['ADMINS'],
+            subject='Your app crashes',
+            credentials=auth,
             secure=secure
-        )  # ЭТИ НАСТРОЙКИ ПРОИЗВОДЯТСЯ СО ЗНАНИЕМ ПОЧТОВОГО СЕРВЕРА
+        )
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 
@@ -72,5 +57,8 @@ if not app.debug:
     app.logger.addHandler(file_handler)
     file_handler.setLevel(logging.INFO)
     app.logger.info('My app start')
+
+
+
 
 from app import routes, models, errors
