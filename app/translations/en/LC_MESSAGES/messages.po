@@ -1,0 +1,258 @@
+# English translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-09-27 14:41+0300\n"
+"PO-Revision-Date: 2023-09-27 14:49+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: app/__init__.py:29
+msgid "Для просмотра необходима авторизация"
+msgstr "Login required to view"
+
+#: app/forms.py:12
+msgid "Логин:"
+msgstr "Login"
+
+#: app/forms.py:13
+msgid "Пароль:"
+msgstr "Password"
+
+#: app/forms.py:14
+msgid "Запомнить меня"
+msgstr "Remember me"
+
+#: app/forms.py:15
+msgid "Войти"
+msgstr "login to account"
+
+#: app/forms.py:19 app/forms.py:57
+msgid "Логин"
+msgstr "Login"
+
+#: app/forms.py:21
+msgid "Пол"
+msgstr "Sex"
+
+#: app/forms.py:22
+msgid "Пароль"
+msgstr "Password"
+
+#: app/forms.py:23 app/forms.py:89
+msgid "Повторите пароль"
+msgstr "Repeat password"
+
+#: app/forms.py:25
+msgid "Пароли не совпадают"
+msgstr "Password mismatch"
+
+#: app/forms.py:27 app/routes.py:117 app/templates/register.html:6
+msgid "Регистрация"
+msgstr "Registration"
+
+#: app/forms.py:38
+msgid "Имя пользователя занято!"
+msgstr ""
+
+#: app/forms.py:50
+msgid "На эту почту уже зарегистрирован аккаунт"
+msgstr "Username taken!"
+
+#: app/forms.py:58
+msgid "Обо мне"
+msgstr ""
+
+#: app/forms.py:59 app/forms.py:95
+msgid "Принять"
+msgstr ""
+
+#: app/forms.py:69
+msgid "Имя занято, используйте другое!"
+msgstr ""
+
+#: app/forms.py:73
+msgid "Подписаться"
+msgstr ""
+
+#: app/forms.py:77
+msgid "Написать"
+msgstr ""
+
+#: app/forms.py:79 app/forms.py:84
+msgid "Отправить"
+msgstr ""
+
+#: app/forms.py:88
+msgid "Введите новый пароль"
+msgstr ""
+
+#: app/forms.py:90
+msgid "Подтвердить"
+msgstr ""
+
+#: app/forms.py:94
+msgid "Редактировать"
+msgstr ""
+
+#: app/routes.py:25
+msgid "Ваш пост опубликован"
+msgstr ""
+
+#: app/routes.py:53 app/templates/base.html:25
+msgid "Домашняя страница"
+msgstr ""
+
+#: app/routes.py:72 app/templates/base.html:26
+msgid "Новости"
+msgstr ""
+
+#: app/routes.py:85
+msgid "Неправильное имя пользователя или пароль "
+msgstr ""
+
+#: app/routes.py:115
+msgid "Регистрация прошла успешно"
+msgstr ""
+
+#: app/routes.py:128 app/routes.py:267
+msgid "Изменения сохранены"
+msgstr ""
+
+#: app/routes.py:133
+msgid "Редактирование профиля"
+msgstr ""
+
+#: app/routes.py:184
+msgid "Нельзя подписаться на самого себя"
+msgstr ""
+
+#: app/routes.py:223
+msgid "Проверь свою почту для восстановления пароля"
+msgstr ""
+
+#: app/routes.py:225
+msgid "Данная почта не зарегистрирована"
+msgstr ""
+
+#: app/routes.py:242
+msgid "Вы установили новый пароль"
+msgstr ""
+
+#: app/templates/404.html:3
+msgid "Страница не найдена"
+msgstr ""
+
+#: app/templates/404.html:4
+msgid "Назад"
+msgstr ""
+
+#: app/templates/500.html:3
+msgid "Что-то пошло не так"
+msgstr ""
+
+#: app/templates/500.html:4
+msgid ""
+"Это может быть ошибка с полями в БД, к примеру из-за некорректных "
+"введенных данных."
+msgstr ""
+
+#: app/templates/500.html:5
+msgid "Попробуйте обновить страницу"
+msgstr ""
+
+#: app/templates/_post.html:15
+msgid "написал"
+msgstr ""
+
+#: app/templates/_post.html:17
+msgid "написала"
+msgstr ""
+
+#: app/templates/base.html:4 app/templates/base.html:6
+msgid "Моя соц сеть"
+msgstr ""
+
+#: app/templates/base.html:30 app/templates/login.html:6
+msgid "Вход"
+msgstr ""
+
+#: app/templates/base.html:33
+msgid "Выход"
+msgstr ""
+
+#: app/templates/edit_profile.html:6
+msgid "Редактирования профиля"
+msgstr ""
+
+#: app/templates/index.html:5
+msgid "Привет"
+msgstr ""
+
+#: app/templates/index.html:21 app/templates/user.html:51
+msgid "Старые посты"
+msgstr ""
+
+#: app/templates/index.html:26 app/templates/user.html:56
+msgid "Новые посты"
+msgstr ""
+
+#: app/templates/login.html:13
+msgid "Новый пользователь?"
+msgstr ""
+
+#: app/templates/login.html:13
+msgid "Нажмите для регистрации"
+msgstr ""
+
+#: app/templates/login.html:14
+msgid "Забыли пароль?"
+msgstr ""
+
+#: app/templates/login.html:14
+msgid "Нажмите для сброса"
+msgstr ""
+
+#: app/templates/reset_password.html:6
+msgid "Восстановление пароля"
+msgstr ""
+
+#: app/templates/reset_password_request.html:6
+msgid "Сброс пароля"
+msgstr ""
+
+#: app/templates/user.html:8
+msgid "Пользователь:"
+msgstr ""
+
+#: app/templates/user.html:13
+msgid "был в сети"
+msgstr ""
+
+#: app/templates/user.html:15
+msgid "была в сети"
+msgstr ""
+
+#: app/templates/user.html:23
+msgid "Подписчики"
+msgstr ""
+
+#: app/templates/user.html:23
+msgid "Подписки"
+msgstr ""
+
+#: app/templates/user.html:25
+msgid "Редактировать профиль"
+msgstr ""
+
