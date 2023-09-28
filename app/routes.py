@@ -1,12 +1,13 @@
 import config
 from app import app, db
-from flask import render_template, flash, redirect, url_for, request, g
+from flask import render_template, flash, redirect, url_for, request, g, jsonify
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
 from app.email import send_password_reset_email
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordForm, \
     ResetPasswordRequestForm, EditPostForm
 from app.models import User, Post
 from flask_babel import _, get_locale
+from translate_ import get_language, translate
 
 # from werkzeug.urls import url_parse
 from urllib.parse import urlparse
@@ -19,7 +20,10 @@ from datetime import datetime
 def index():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(body=form.post_tx.data, author=current_user)
+        language = get_language(form.post_tx.data)
+        if len(language) > 5:
+            language = ''
+        post = Post(body=form.post_tx.data, author=current_user, language=language)
         db.session.add(post)
         db.session.commit()
         flash(_('Ваш пост опубликован'))
@@ -269,3 +273,11 @@ def edit_post(id, url=None):
     elif request.method == 'GET':
         form.posts.data = post.body
     return render_template('edit_post.html', form=form)
+
+
+@app.route('/translate', methods=['POST'])
+@login_required
+def translate_text():
+    return jsonify({'text': translate(request.form['text'],
+                                      request.form['source_lang'], request.form['dest_lang'])})
+
