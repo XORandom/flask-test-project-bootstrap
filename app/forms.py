@@ -98,3 +98,11 @@ class EditPostForm(FlaskForm):
         super(EditPostForm, self).__init__(*args, **kwargs)
         self.posts_ = post_tx
     """содержит блок текста"""
+
+
+class MessageForm(FlaskForm):
+    def __init__(self, formdata=_Auto, **kwargs):
+        super().__init__(formdata, kwargs)
+        self.message = None
+
+    pass

@@ -4,8 +4,8 @@ from flask import render_template, flash, redirect, url_for, request, g, jsonify
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
 from app.email import send_password_reset_email
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordForm, \
-    ResetPasswordRequestForm, EditPostForm
-from app.models import User, Post
+    ResetPasswordRequestForm, EditPostForm, MessageForm
+from app.models import User, Post, Message
 from flask_babel import _, get_locale
 from translate_ import get_language, translate
 
@@ -275,9 +275,25 @@ def edit_post(id, url=None):
     return render_template('edit_post.html', form=form)
 
 
-@app.route('/translate', methods=['POST'])
+# @app.route('/translate', methods=['POST'])
+@app.route('/translate_', methods=['GET', 'POST'])
 @login_required
 def translate_text():
     return jsonify({'text': translate(request.form['text'],
                                       request.form['source_lang'], request.form['dest_lang'])})
 
+
+@app.route('/send_messages/<recipient>', methods=['GET', 'POST'])
+@login_required
+def send_message(recipient):
+    user = User.query.filter_by(username=recipient).first()
+    form = MessageForm()
+    if form.validate_on_submit():
+        msg = Message(author=current_user, recipient=user,
+                      body=form.message.data)
+        db.session.add(msg)
+        db.session.commit()
+        flash(_('Cообщение отправлено'))
+        return redirect(url_for('user', username=recipient))
+    return render_template('send_message.html', title=_('новое сообщение'),
+                           form=form, recipient=recipient)
