@@ -1,6 +1,6 @@
 import os
 from flask import Flask, current_app, request
-from flask_babel import Babel
+from flask_babel import Babel, _, lazy_gettext as _l
 
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
-from flask_babel import _, get_locale
+
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 
@@ -26,7 +26,7 @@ login = LoginManager(app)
 """Отвечает за логины"""
 login.login_view = 'login'
 """Ищет маршрут login, будет подставлять имя пользователя в строку браузера"""
-login.login_message = _('Для просмотра необходима авторизация')
+login.login_message = _l('Для просмотра необходима авторизация')
 """Замена английского сообщения на русское"""
 mail = Mail(app)
 bootstrap = Bootstrap(app)

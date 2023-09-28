@@ -4,7 +4,7 @@ from flask import render_template, flash, redirect, url_for, request, g, jsonify
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
 from app.email import send_password_reset_email
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordForm, \
-    ResetPasswordRequestForm, EditPostForm, MessageForm
+    ResetPasswordRequestForm, MessageForm, EditPostForm
 from app.models import User, Post, Message
 from flask_babel import _, get_locale
 from translate_ import get_language, translate
@@ -42,18 +42,6 @@ def index():
     else:
         prev_page_url = None
 
-    # posts = [
-    #     {
-    #         'author': {'username': 'Наташа'},
-    #         'gender': 'F',
-    #         'body': 'Хочется домой...'
-    #     },
-    #     {
-    #         'author': {'username': 'Андрей'},
-    #         'gender': 'M',
-    #         'body': 'Да пора уже'
-    #     }
-    # ]
     return render_template('index.html', title=_('Домашняя страница'), posts=posts, form=form, user=current_user,
                            next_url=next_page_url, prev_url=prev_page_url)
 
@@ -63,7 +51,7 @@ def index():
 def news():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(page=page,
-                                                                per_page=config.Config.POSTS_ON_PAGE, error_out=False)
+                                                                per_page=app.config['POSTS_ON_PAGE'], error_out=False)
     if posts.has_next:
         next_page_url = url_for('news', page=posts.next_num)
     else:
@@ -84,16 +72,16 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user_login = User.query.filter_by(username=form.username.data).first()
-        if user_login is None or not user_login.check_password(form.password.data):
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
             flash(_('Неправильное имя пользователя или пароль '))
             return redirect(url_for('login'))
-        login_user(user=user_login, remember=form.remember_me.data)
+        login_user(user=user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
-    return render_template('login.html', title='Вход', form=form)
+    return render_template('login.html', title=_('Вход'), form=form)
 
 
 @app.route('/logout')
@@ -147,10 +135,6 @@ def user(username):
     posts = user_.posts.order_by(Post.timestamp.desc()).paginate(page=page,
                                                                  per_page=config.Config.POSTS_ON_PAGE,
                                                                  error_out=False)
-    # posts = [
-    #     {'author': user_, 'body': "Пора домой!!!"},
-    #     {'author': user_, 'body': "Скорее уже!!!"}
-    # ]
     if posts.has_next:
         next_page_url = url_for('user', page=posts.next_num, username=user_.username)
     else:
@@ -229,7 +213,7 @@ def reset_password_request():
             flash(_('Данная почта не зарегистрирована'))
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',
-                           title='Сброс пароля', form=form)
+                           title=_('Сброс пароля'), form=form)
 
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -276,7 +260,7 @@ def edit_post(id, url=None):
 
 
 # @app.route('/translate', methods=['POST'])
-@app.route('/translate_', methods=['GET', 'POST'])
+@app.route('/translate_', methods=['POST'])
 @login_required
 def translate_text():
     return jsonify({'text': translate(request.form['text'],
@@ -293,7 +277,44 @@ def send_message(recipient):
                       body=form.message.data)
         db.session.add(msg)
         db.session.commit()
-        flash(_('Cообщение отправлено'))
+        flash(_('Сообщение отправлено'))
         return redirect(url_for('user', username=recipient))
     return render_template('send_message.html', title=_('новое сообщение'),
                            form=form, recipient=recipient)
+
+
+@app.route('/messages/')
+@login_required
+def messages():
+    return redirect(url_for('messages_page', flag='input'))
+
+
+@app.route('/messages/<flag>')
+@login_required
+def messages_page(flag):
+    current_user.last_message_read_time = datetime.utcnow()
+    #current_user.add_notification('unread_message_count', 0)
+    db.session.commit()
+    page = request.args.get('page', 1, type=int)
+    if flag == 'input':
+        messages = current_user.messages_received.order_by(
+            Message.timestamp.desc()).paginate(
+                page=page, per_page=app.config['POSTS_ON_PAGE'], error_out=False)
+
+    else:
+        messages = current_user.messages_send.order_by(
+            Message.timestamp.desc()).paginate(
+            page=page, per_page=app.config['POSTS_ON_PAGE'], error_out=False)
+
+    if flag == 'input':
+        next_url = url_for('messages_page', page=messages.next_num, flag='input') \
+            if messages.has_next else None
+        prev_url = url_for('messages_page', page=messages.prev_num, flag='input') \
+            if messages.has_prev else None
+    else:
+        next_url = url_for('messages_page', page=messages.next_num, flag='output') \
+            if messages.has_next else None
+        prev_url = url_for('messages_page', page=messages.prev_num, flag='output') \
+            if messages.has_prev else None
+    return render_template('messages.html', messages=messages,
+                           next_url=next_url, prev_url=prev_url)

@@ -42,14 +42,14 @@ class User(db.Model, UserMixin):
     messages_send = db.relationship('Message', foreign_keys='Message.sender_id',
                                     backref='author', lazy='dynamic')
     """Ассоциация между сообщением и отправителем"""
-    messages_received = db.relationship('Message', foreign_keys='Message.sender_id',
+    messages_received = db.relationship('Message', foreign_keys='Message.recipient_id',
                                         backref='recipient', lazy='dynamic')
     """Ассоциация между сообщением и отправителем"""
-    last_massage_read_time = db.Column(db.DateTime)
+    last_message_read_time = db.Column(db.DateTime)
 
 
     def new_messages(self):
-        last_read_time = self.last_massage_read_time or datetime(0, 1, 1)
+        last_read_time = self.last_message_read_time or datetime(year=1, month=1, day=1)
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
 
@@ -77,7 +77,9 @@ class User(db.Model, UserMixin):
 
         :return True, если подписан, False, если нет:
         """
-        return self.following.filter(followers.c.following_id == user.id).count() > 0
+        return self.following.filter(
+            followers.c.following_id == user.id).count() > 0
+
 
     def follow(self, user):
         """
@@ -138,7 +140,7 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    language_ = db.Column(db.String(5))
+    language = db.Column(db.String(5))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)

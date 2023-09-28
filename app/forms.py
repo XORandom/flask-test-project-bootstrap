@@ -2,25 +2,25 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from app.models import User
-from flask_babel import _
+from flask_babel import _, lazy_gettext as _l
 
 
 # from email_validator import validate_email
 
 
 class LoginForm(FlaskForm):
-    username = StringField(_('Логин:'), validators=[DataRequired()])
-    password = PasswordField(_('Пароль:'), validators=[DataRequired()])
-    remember_me = BooleanField(_('Запомнить меня'))
-    submit = SubmitField(_('Войти'))
+    username = StringField(_l('Логин:'), validators=[DataRequired()])
+    password = PasswordField(_l('Пароль:'), validators=[DataRequired()])
+    remember_me = BooleanField(_l('Запомнить меня'))
+    submit = SubmitField(_l('Войти'))
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(_('Логин'), validators=[DataRequired()])
+    username = StringField(_l('Логин'), validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    gender = SelectField(_('Пол'), coerce=str, choices=[('M', 'М'), ('F', 'Ж')])
-    password = PasswordField(_('Пароль'), validators=[DataRequired()])
-    password2 = PasswordField(_('Повторите пароль'),
+    gender = SelectField(_l('Пол'), coerce=str, choices=[('M', 'М'), ('F', 'Ж')])
+    password = PasswordField(_l('Пароль'), validators=[DataRequired()])
+    password2 = PasswordField(_l('Повторите пароль'),
                               validators=[DataRequired(),
                                           EqualTo('password', message=_('Пароли не совпадают'))
                                           ])
@@ -54,9 +54,9 @@ class EditProfileForm(FlaskForm):
     """
     Позволяет поменять имя, описание
     """
-    username = StringField(_('Логин'), validators=[DataRequired()])
-    about_me = TextAreaField(_('Обо мне'), validators=[Length(min=0, max=140)])
-    submit = SubmitField(_('Принять'))
+    username = StringField(_l('Логин'), validators=[DataRequired()])
+    about_me = TextAreaField(_l('Обо мне'), validators=[Length(min=0, max=140)])
+    submit = SubmitField(_l('Принять'))
 
     def __init__(self, self_name, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
@@ -70,24 +70,25 @@ class EditProfileForm(FlaskForm):
 
 
 class EmptyForm(FlaskForm):
-    submit = SubmitField(_('Подписаться'))
+    submit = SubmitField(_l('Подписаться'))
 
 
 class PostForm(FlaskForm):
-    post_tx = TextAreaField(_('Написать'), validators=[DataRequired()])
+    post_tx = TextAreaField(_l('Написать'), validators=[DataRequired()])
     """содержит блок текста"""
-    submit = SubmitField(_('Отправить'))
+    submit = SubmitField(_l('Отправить'))
 
 
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField(_('Отправить'))
+    submit = SubmitField(_l('Отправить'))
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField(_('Введите новый пароль'), validators=[DataRequired()])
-    password2 = PasswordField(_('Повторите пароль'), validators=[DataRequired(), EqualTo(password)])
-    submit = SubmitField(_('Подтвердить'))
+    password = PasswordField(_l('Введите новый пароль'), validators=[DataRequired()])
+    password2 = PasswordField(_l('Повторите пароль'),
+                              validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(_l('Подтвердить'))
 
 
 class EditPostForm(FlaskForm):
@@ -101,8 +102,7 @@ class EditPostForm(FlaskForm):
 
 
 class MessageForm(FlaskForm):
-    def __init__(self, formdata=_Auto, **kwargs):
-        super().__init__(formdata, kwargs)
-        self.message = None
-
-    pass
+    message = TextAreaField(_l('Сообщение'), validators=[
+        DataRequired()
+    ])
+    submit = SubmitField(_l('Отправить'))
