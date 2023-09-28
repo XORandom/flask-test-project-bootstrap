@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
+
 {% block app_content %}
-  <h1>{{ _('Страница не найдена') }}</h1>
-  <p><a href="{{ url_for('index') }}">{{ _('Назад') }}</a> </p>
+    <h1>{{_('Страница не найдена')}}</h1>
+<p><a href="{{url_for('index')}}">{{_('Назад')}}</a></p>
 {% endblock %}

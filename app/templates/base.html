@@ -1,14 +1,13 @@
-{% extends 'bootstrap/base.html' %}
+{% extends 'bootstrap/base.html'%}
 
 
 {% block title %}
     {% if title %}
-        {{ title }} - {{ _('Моя соц сеть') }}
+    {{ title }} - {{_('Моя соц сеть')}}
     {% else %}
-        {{ _('Моя соц сеть') }}
+    {{_('Добро пожаловать в мою соц сеть!')}}
     {% endif %}
 {% endblock %}
-
 
 {% block navbar %}
     <nav class="navbar navbar-default">
@@ -20,25 +19,35 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">Мой блог</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">{{_('Моя соц сеть')}}</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('index') }}">{{ _('Домашняя страница') }}</a></li>
-                    <li><a href="{{ url_for('news') }}">{{ _('Новости') }}</a></li>
+                    <li><a href="{{ url_for('index') }}">{{_('Домашняя страница')}}</a></li>
+                    <li><a href="{{ url_for('news') }}">{{_('Новости')}}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for('login') }}">{{ _('Вход') }}</a></li>
+                    <li><a href="{{ url_for('login') }}">{{_('Вход')}}</a></li>
                     {% else %}
-                    <li><a href="{{ url_for('user', username=current_user.username) }}">Профиль</a></li>
-                    <li><a href="{{ url_for('logout') }}">{{ _('Выход') }}</a></li>
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">{{_('Профиль пользователя')}}</a></li>
+                    <li><a href="{{ url_for('messages') }}">
+                        {{_('Сообщения')}}
+                        {% set new_messages = current_user.new_messages() %}
+                            {% if new_messages %}
+                                <span class="badge">{{ new_messages }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('logout') }}">{{_('Выход')}}</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 {% endblock %}
+
+
 
 {% block content %}
     <div class="container">
@@ -58,22 +67,20 @@
 {% block scripts %}
     {{ super() }}
     {{ moment.include_moment() }}
-    {{ moment.lang(g.locale) }}
-<!--    {{ moment.lang('ru') }}-->
-<!--JS-->
+    {{ moment.lang(g.locale)}}
 <script>
     function translate(sourceElem, destElem, sourceLang, destLang)
     {
-        $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+        $(destElem).html('<img src="{{ url_for('static', filename='loading.gif')}}">');
         $.post('/translate', {
-                              text: $(sourceElem).text(),
-                              source_lang: sourceLang
-                              dest_lang: destLang
-                              }
-				).done(function(response) {$(destElem).text(response['text'])}
-						).fail(function(){
-						$(destElem).text("{{_('Ошибка, нельзя подключиться к серверу')}}");
-										 });
-	}
+        text: $(sourceElem).text(),
+        source_lang: sourceLang,
+        dest_lang: destLang
+        }).done(function(response) {
+            $(destElem).text(response['text'])
+        }).fail(function(){
+            $(destElem).text("{{_('Ошибка не могу подключиться к серверу!')}}");
+        });
+    }
 </script>
 {% endblock %}

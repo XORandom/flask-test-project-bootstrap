@@ -1,29 +1,28 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf_form %}
 
 {% block app_content %}
-    <h1>{{ _('Привет') }}, {{ current_user.username }}!</h1>
+    <h1>{{_('Привет')}}, {{ current_user.username }}!</h1>
     {% if form %}
-       {{ wtf_form.quick_form(form) }}
-        <br>
+    {{ wtf_form.quick_form(form)}}
+    <br>
     {% endif %}
     {% for post in posts %}
         {% include '_post.html' %}
         {% if current_user.id == post.author.id %}
-            <a href="{{ url_for('delete_post', id=post.id, url='выяснить как сделать') }}">Удалить пост</a>
-            <a href="{{ url_for('edit_post', id=post.id, url='выяснить как сделать') }}">Редактировать пост</a>
+            <a href="{{ url_for('delete_post', id=post.id)}}">{{_('Удалить пост')}}</a>
         {% endif %}
     {% endfor %}
-<nav aria-label="...">
+    <nav aria-label="...">
         <ul class="pager">
             <li class="next{% if not next_url %} disabled{% endif %}">
                 <a href="{{ next_url or '#' }}">
-                   {{ _('Старые посты') }} <span aria-hidden="true">&rarr;</span>
+                   {{_('Старые посты')}} <span aria-hidden="true">&rarr;</span>
                 </a>
             </li>
             <li class="previous{% if not prev_url %} disabled{% endif %}">
                 <a href="{{ prev_url or '#' }}">
-                    <span aria-hidden="true">&larr;</span> {{ _('Новые посты') }}
+                    <span aria-hidden="true">&larr;</span> {{_('Новые посты')}}
                 </a>
             </li>
         </ul>
