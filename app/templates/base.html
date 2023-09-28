@@ -68,7 +68,7 @@
         $.post('/translate', {
                               text: $(sourceElem).text(),
                               source_lang: sourceLang
-                              destination_lang: destLang
+                              dest_lang: destLang
                               }
 				).done(function(response) {$(destElem).text(response['text'])}
 						).fail(function(){

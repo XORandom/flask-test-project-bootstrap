@@ -30,12 +30,22 @@
                         {{ form.hidden_tag() }}
                         {{ form.submit() }}
                     </form>
-                {% else %} <!--Если подписан-->
+                <p>
+                    {% else %} <!--Если подписан-->
+
                     <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form.submit(value=_('Отписаться')) }}
-                    </form>
-                {% endif %}
+                            {{ form.hidden_tag() }}
+                            {{ form.submit(value=_('Отписаться')) }}
+                        </form>
+                    {% endif %}
+                </p>
+                    {% if user != current_user %}
+                    <p>
+                        <a href="{{ url_for('send_message', recipient=user.username) }}">
+                            {{ _(Написать сообщение) }}
+                        </a>
+                    </p>
+                    {% endif %}
 <!--                </p>-->
             </td>
         </tr>

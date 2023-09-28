@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% if request.path == '/messages/input' %}
+        <h1>{{ _('Входящие сообщения') }}</h1>
+    {% else %}
+        <h1>{{ _('Отправленные сообщения') }}</h1>
+    {% endif %}
+    <ul class="nav nav-tabs nav-justified">
+        <li id='first_nav' role="presentation"><a href="{{url_for('main.messages_page', flag='input')}}">
+            {{_('Входящие')}}</a></li>
+        <li id='second_nav' role="presentation"><a href="{{url_for('main.messages_page', flag='output')}}">
+            {{_('Отправленные')}}</a></li></ul>
+
+    {% for post in messages %}
+        {% include '_post.html' %}
+    {% endfor %}
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> {{ _('Новые сообщения') }}
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    {{ _('Старые сообщения') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
