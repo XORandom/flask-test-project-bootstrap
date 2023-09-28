@@ -12,14 +12,26 @@
             </a>
 
             {% if post.author.gender=='M'%}
-            {{ _('написал') }}
+                {{ _('написал') }}
             {% else%}
-            {{ _('написала') }}
+                {{ _('написала') }}
             {% endif %}
-            {{ moment(post.timestamp).fromNow() }}
+            <i> {{ moment(post.timestamp).fromNow() }} </i>
             :
             <br>
-            {{ post.body }}
+
+            <span id="post_{{post.id}}">{{post.body}}</span>
+            <br>
+            <!--Создается переменная id, куда передается translation(post.id)-->
+            <!--После чего производится вызов JS функции translate()-->
+            {% if post.language and post.language != g.locale %}
+            <span id="translation{{post.id}}">
+                <a href="javascript: translate(
+                '#post_{{ post.id }}',
+                '#translation{{ post.id }}',
+                '{{ post.language_ }}',
+                '{{ g.locale }}')">{{_('Перевести')}}</a></span>
+            {% endif %}
         </td>
     </tr>
 </table>

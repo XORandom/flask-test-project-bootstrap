@@ -58,4 +58,20 @@
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
 <!--    {{ moment.lang('ru') }}-->
+<!--JS-->
+<script>
+    function translate(sourceElem, destElem, sourceLang, destLang)
+    {
+        $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+        $.post('/translate', {
+                              text: $(sourceElem).text(),
+                              source_lang: sourceLang
+                              dest_lang: destLang
+                              }
+    }).done(function(response) {
+                               $(destElem).text(response['text'])
+                               }).fail(function(){
+                                                $(destElem).text("{{_('Ошибка, нельзя подключиться к серверу')}}");
+                                                }
+</script>
 {% endblock %}
