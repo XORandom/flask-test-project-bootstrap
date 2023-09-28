@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-27 15:18+0300\n"
+"POT-Creation-Date: 2023-09-28 21:39+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,47 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: app/__init__.py:29
-msgid "Для просмотра необходима авторизация"
-msgstr ""
-
-#: app/forms.py:12
-msgid "Логин:"
-msgstr ""
-
-#: app/forms.py:13
-msgid "Пароль:"
-msgstr ""
-
-#: app/forms.py:14
-msgid "Запомнить меня"
-msgstr ""
-
-#: app/forms.py:15
-msgid "Войти"
-msgstr ""
-
-#: app/forms.py:19 app/forms.py:57
-msgid "Логин"
-msgstr ""
-
-#: app/forms.py:21
-msgid "Пол"
-msgstr ""
-
-#: app/forms.py:22
-msgid "Пароль"
-msgstr ""
-
-#: app/forms.py:23 app/forms.py:89
-msgid "Повторите пароль"
-msgstr ""
-
 #: app/forms.py:25
 msgid "Пароли не совпадают"
 msgstr ""
 
-#: app/forms.py:27 app/routes.py:117 app/templates/register.html:6
+#: app/forms.py:27 app/routes.py:109 app/templates/register.html:6
 msgid "Регистрация"
 msgstr ""
 
@@ -69,84 +33,76 @@ msgstr ""
 msgid "На эту почту уже зарегистрирован аккаунт"
 msgstr ""
 
-#: app/forms.py:58
-msgid "Обо мне"
-msgstr ""
-
-#: app/forms.py:59 app/forms.py:95
-msgid "Принять"
-msgstr ""
-
 #: app/forms.py:69
 msgid "Имя занято, используйте другое!"
 msgstr ""
 
-#: app/forms.py:73
-msgid "Подписаться"
-msgstr ""
-
-#: app/forms.py:77
-msgid "Написать"
-msgstr ""
-
-#: app/forms.py:79 app/forms.py:84
-msgid "Отправить"
-msgstr ""
-
-#: app/forms.py:88
-msgid "Введите новый пароль"
-msgstr ""
-
-#: app/forms.py:90
-msgid "Подтвердить"
-msgstr ""
-
-#: app/forms.py:94
+#: app/forms.py:95
 msgid "Редактировать"
 msgstr ""
 
-#: app/routes.py:25
+#: app/forms.py:96
+msgid "Принять"
+msgstr ""
+
+#: app/routes.py:29
 msgid "Ваш пост опубликован"
 msgstr ""
 
-#: app/routes.py:53 app/templates/base.html:25
+#: app/routes.py:45 app/templates/base.html:27
 msgid "Домашняя страница"
 msgstr ""
 
-#: app/routes.py:72 app/templates/base.html:26
+#: app/routes.py:64 app/templates/base.html:28
 msgid "Новости"
 msgstr ""
 
-#: app/routes.py:85
+#: app/routes.py:77
 msgid "Неправильное имя пользователя или пароль "
 msgstr ""
 
-#: app/routes.py:115
+#: app/routes.py:84 app/templates/base.html:32 app/templates/login.html:6
+msgid "Вход"
+msgstr ""
+
+#: app/routes.py:107
 msgid "Регистрация прошла успешно"
 msgstr ""
 
-#: app/routes.py:128 app/routes.py:267
+#: app/routes.py:120 app/routes.py:255
 msgid "Изменения сохранены"
 msgstr ""
 
-#: app/routes.py:133
+#: app/routes.py:125
 msgid "Редактирование профиля"
 msgstr ""
 
-#: app/routes.py:184
+#: app/routes.py:172
 msgid "Нельзя подписаться на самого себя"
 msgstr ""
 
-#: app/routes.py:223
+#: app/routes.py:211
 msgid "Проверь свою почту для восстановления пароля"
 msgstr ""
 
-#: app/routes.py:225
+#: app/routes.py:213
 msgid "Данная почта не зарегистрирована"
 msgstr ""
 
-#: app/routes.py:242
+#: app/routes.py:216 app/templates/reset_password_request.html:6
+msgid "Сброс пароля"
+msgstr ""
+
+#: app/routes.py:230
 msgid "Вы установили новый пароль"
+msgstr ""
+
+#: app/routes.py:280
+msgid "Сообщение отправлено"
+msgstr ""
+
+#: app/routes.py:282
+msgid "новое сообщение"
 msgstr ""
 
 #: app/templates/404.html:3
@@ -179,16 +135,36 @@ msgstr ""
 msgid "написала"
 msgstr ""
 
-#: app/templates/base.html:4 app/templates/base.html:6
+#: app/templates/_post.html:33
+msgid "Перевести"
+msgstr ""
+
+#: app/templates/base.html:6 app/templates/base.html:23
 msgid "Моя соц сеть"
 msgstr ""
 
-#: app/templates/base.html:30 app/templates/login.html:6
-msgid "Вход"
+#: app/templates/base.html:8
+msgid "Добро пожаловать в мою соц сеть!"
 msgstr ""
 
-#: app/templates/base.html:33
+#: app/templates/base.html:34
+msgid "Профиль пользователя"
+msgstr ""
+
+#: app/templates/base.html:36
+msgid "Сообщения"
+msgstr ""
+
+#: app/templates/base.html:43
 msgid "Выход"
+msgstr ""
+
+#: app/templates/base.html:85
+msgid "Ошибка не могу подключиться к серверу!"
+msgstr ""
+
+#: app/templates/edit_post.html:6
+msgid "Редактирование комментария"
 msgstr ""
 
 #: app/templates/edit_profile.html:6
@@ -199,11 +175,11 @@ msgstr ""
 msgid "Привет"
 msgstr ""
 
-#: app/templates/index.html:21 app/templates/user.html:51
+#: app/templates/index.html:21
 msgid "Старые посты"
 msgstr ""
 
-#: app/templates/index.html:26 app/templates/user.html:56
+#: app/templates/index.html:26
 msgid "Новые посты"
 msgstr ""
 
@@ -223,40 +199,36 @@ msgstr ""
 msgid "Нажмите для сброса"
 msgstr ""
 
+#: app/templates/mesages.html:5
+msgid "Входящие сообщения"
+msgstr ""
+
+#: app/templates/mesages.html:7
+msgid "Отправленные сообщения"
+msgstr ""
+
+#: app/templates/mesages.html:11
+msgid "Входящие"
+msgstr ""
+
+#: app/templates/mesages.html:13
+msgid "Отправленные"
+msgstr ""
+
+#: app/templates/mesages.html:22
+msgid "Новые сообщения"
+msgstr ""
+
+#: app/templates/mesages.html:27
+msgid "Старые сообщения"
+msgstr ""
+
 #: app/templates/reset_password.html:6
 msgid "Восстановление пароля"
 msgstr ""
 
-#: app/templates/reset_password_request.html:6
-msgid "Сброс пароля"
-msgstr ""
-
-#: app/templates/user.html:8
-msgid "Пользователь:"
-msgstr ""
-
-#: app/templates/user.html:13
-msgid "был в сети"
-msgstr ""
-
-#: app/templates/user.html:15
-msgid "была в сети"
-msgstr ""
-
-#: app/templates/user.html:24
+#: app/templates/send_message.html:5
 #, python-format
-msgid "Подписчики: %(count)d"
-msgstr ""
-
-#: app/templates/user.html:24
-msgid "Подписки"
-msgstr ""
-
-#: app/templates/user.html:26
-msgid "Редактировать профиль"
-msgstr ""
-
-#: app/templates/user.html:36
-msgid "Отписаться"
+msgid "Отправить сообщение для %(recipient)s"
 msgstr ""
 
